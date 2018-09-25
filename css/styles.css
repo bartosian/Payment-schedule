@@ -1,0 +1,35 @@
+* {
+    font-family: 'Arvo', serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+
+.form-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.form-box {
+    background: rgba(206,212,217,0.3);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.main-header {
+    margin-top: 50px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: grey;
+    text-shadow: 0 0 1px black;
+}
+
+label {
+
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+
+}
