@@ -8,9 +8,10 @@
         @import url('https://fonts.googleapis.com/css?family=Arvo:400,700');
     </style>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/paymentCalculator.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="main-form">
         <div class="row">
             <h1 class="col-12 text-center main-header">Calculate your payment schedule.</h1>
         </div>
@@ -41,12 +42,12 @@
                             <option value="Monthly">Monthly</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">CALCULATE</button>
+                    <button type="submit" class="btn btn-primary" id="calcBtn">CALCULATE</button>
                 </form>
             </div>
         </div>
     </div>
-    <div class="container">
+    <div class="container payment-schedule" id="schedule">
         <div class="row">
             <h1 class="col-12 text-center main-header">YOUR PAYMENT SCHEDULE</h1>
         </div>
@@ -86,5 +87,6 @@
             </div>
         </div>
         </div>
+    <script src="js/index.js"></script>
 </body>
 </html>

@@ -1,17 +1,17 @@
+'use strict';
+
+
 class PaymentCalculator {
 
-    constructor(startDate,
-                loanAmount,
-                insAmount,
-                SIR,
-                instInt) {
-        this.startDate = startDate;
-        this.loanAmount = loanAmount;
-        this.insAmount = insAmount;
-        this.SIR = SIR;
-        this.instInt = instInt;
+
+    constructor(data) {
+        this.startDate = data.startDate;
+        this.loanAmount = data.loanAmount;
+        this.insAmount = data.insAmount;
+        this.SIR = data.SIR;
+        this.instInt = data.instInt;
         this.daysInYear = 360;
-        this.IntNum = instInt === "Daily" ? 1 : instInt === "Weekly" ? 7 : 30;
+        this.IntNum = data.instInt === "Daily" ? 1 : data.instInt === "Weekly" ? 7 : 30;
     }
 
     calculateDaysQuantityWithoutInt() {
