@@ -19,23 +19,23 @@
                 <form class="form">
                     <div class="form-group">
                         <label for="date">Start date:</label>
-                        <input type="text" class="form-control" id="date">
+                        <input type="date" class="form-control" id="date" required>
                     </div>
                     <div class="form-group">
                         <label for="Loan_Amount">Loan Amount:</label>
-                        <input type="password" class="form-control" id="Loan_Amount">
+                        <input type="number" class="form-control" id="Loan_Amount" placeholder="Enter loan amount" required>
                     </div>
                     <div class="form-group">
                         <label for="Installment_Amount">Installment Amount:</label>
-                        <input type="text" class="form-control" id="Installment_Amount">
+                        <input type="number" class="form-control" id="Installment_Amount" placeholder="Enter installment amount" required>
                     </div>
                     <div class="form-group">
                         <label for="Interest_Rate">Simple Interest Rate:</label>
-                        <input type="password" class="form-control" id="Interest_Rate">
+                        <input type="number" class="form-control" id="Interest_Rate" placeholder="Enter interest rate" required>
                     </div>
                     <div class="form-group">
                         <label for="inst_int">Installment Interval:</label>
-                        <select class="form-control" id="inst_int">
+                        <select class="form-control" id="inst_int" required>
                             <option value="Daily">Daily</option>
                             <option value="Weekly">Weekly</option>
                             <option value="Monthly">Monthly</option>
