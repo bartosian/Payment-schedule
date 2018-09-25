@@ -1,4 +1,4 @@
-class Calculator {
+class PaymentCalculator {
 
     constructor(startDate,
                 loanAmount,
@@ -10,23 +10,33 @@ class Calculator {
         this.insAmount = insAmount;
         this.SIR = SIR;
         this.instInt = instInt;
+        this.daysInYear = 360;
     }
 
-    createPaymentSchedule() {
-        let totalPayments;
-        let totalAmount;
+    calculatePaymentsQuantity() {
+       const quantityWithoutInterest = Math.ceil(this.loanAmount / this.insAmount);
+       let payoutTimeWithoutInterest;
 
-        switch(this.instInt) {
-            case "Daily": {
-                totalPayments = this.loanAmount / this.insAmount;
-                totalInterestAmount = (totalPayments / 361) * (this.SIR / 100);
-                break;
-            } case "Weekly": {
-
-                break;
-            } case "Monthly": {
-                break;
-            }
-        }
+       switch(this.instInt) {
+           case "Daily":
+               payoutTimeWithoutInterest = quantityWithoutInterest;
+               break;
+           case "Monthly":
+               payoutTimeWithoutInterest = quantityWithoutInterest * 30;
+               break;
+           case "Weekly":
+               payoutTimeWithoutInterest = quantityWithoutInterest * 7;
+               break;
+       }
     }
+
+    roundNumber(num, length) {
+        var newNumber = Math.round(num * Math.pow(10, length)) / Math.pow(10, length);
+        return newNumber;
+    }
+
+
+
+
+
 }
