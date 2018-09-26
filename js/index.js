@@ -22,6 +22,8 @@ window.onload = () => {
 
         calculator = new PaymentCalculator(userData);
 
+        calculator.generateSchedule();
+
         form.style.display = "none";
         schedule.style.display = "block";
     }

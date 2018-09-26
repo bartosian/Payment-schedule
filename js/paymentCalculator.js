@@ -1,5 +1,3 @@
-'use strict';
-
 
 class PaymentCalculator {
 
@@ -10,83 +8,92 @@ class PaymentCalculator {
         this.insAmount = data.insAmount;
         this.SIR = data.SIR;
         this.instInt = data.instInt;
-        this.daysInYear = 360;
+        this.daysInYear = 365;
         this.IntNum = data.instInt === "Daily" ? 1 : data.instInt === "Weekly" ? 7 : 30;
     }
 
     calculateDaysQuantityWithoutInt() {
        const quantityWithoutInterest = Math.ceil(this.loanAmount / this.insAmount); // payments quantity without interest
-       let payoutTimeWithoutInterest; // days quantity without interest
-
-       switch(this.instInt) {
-           case "Daily":
-               payoutTimeWithoutInterest = quantityWithoutInterest;
-               break;
-           case "Monthly":
-               payoutTimeWithoutInterest = quantityWithoutInterest * 30;
-               break;
-           case "Weekly":
-               payoutTimeWithoutInterest = quantityWithoutInterest * 7;
-               break;
-       }
+       let payoutTimeWithoutInterest = quantityWithoutInterest * this.IntNum; // days quantity without interest
 
        return payoutTimeWithoutInterest;
     }
 
-    calculateDaysQuantityWithInt() {
-        const quantityWithInterest = Math.ceil(this.totalAmountWithInterest / this.insAmount);// payments quantity with interest
-        let payoutTimeWithInterest;
-
-        switch(this.instInt) {
-            case "Daily":
-                payoutTimeWithInterest = quantityWithInterest;
-                break;
-            case "Monthly":
-                payoutTimeWithInterest = quantityWithInterest * 30;
-                break;
-            case "Weekly":
-                payoutTimeWithInterest = quantityWithInterest * 7;
-                break;
-        }
-
-        return payoutTimeWithInterest;
-    }
 
     // Static method to round numbers
     static roundNumber(num, length) {
         return  Math.round(num * Math.pow(10, length)) / Math.pow(10, length);
     }
 
-    // Method to generate schedule
-    generateSchedule() {
-        const firstRow = `
-                     <tr>
-                        <td>${this.startDate}</td>
-                        <td>-</td>
-                        <td>${this.totalAmountWithInterest}</td>
-                    </tr>`;
-        const paymentsQuantity = this.calculateDaysQuantityWithInt() / this.instInt;
-        let totalSum = this.totalAmountWithInterest;
+    // Total interest amount
+    get interestAmount() {
+        return PaymentCalculator.roundNumber(this.loanAmount * (this.SIR / 100) * (this.calculateDaysQuantityWithoutInt()/this.daysInYear), 2);
+    }
+    // Payments days quantity for Interest
+    calculateDaysQuantityForInterest() {
+        const quantityForInterest = Math.ceil(this.interestAmount / this.insAmount); // payments quantity for interest
+        let payoutForInterest = quantityForInterest * this.IntNum; // days quantity for interest
+
+        return payoutForInterest;
     }
 
-    // Daily rate
-    get dailyRate() {
-        return this.roundNumber(this.SIR / this.daysInYear, 2);
+    // Total interest amount
+    get lastPayment() {
+        return PaymentCalculator.roundNumber(this.loanAmount * (this.SIR / 100) * (this.calculateDaysQuantityForInterest()/this.daysInYear), 2);
     }
-
-    // Interest amount
-    get sumInterest() {
-        return this.dailyRate * this.calculateDaysQuantityWithoutInt();
+    // Total days for loan
+    get totalDaysQuantity() {
+        return this.calculateDaysQuantityWithoutInt() + this.calculateDaysQuantityForInterest();
     }
 
     // Total amount with interest
-    get totalAmountWithInterest() {
-        return this.loanAmount + this.sumInterest + this.lastPayment;
+    get totalLoanAmount() {
+        return this.loanAmount + this.interestAmount + this.lastPayment;
     }
 
-    // Lat payment amount
-    get lastPayment() {
-        return (this.calculateDaysQuantityWithInt() - this.calculateDaysQuantityWithoutInt()) * this.dailyRate;
+    generateSchedule() {
+        let table = document.getElementById("main-table");
+        let tableBody = document.createElement("tbody");
+        let paymentsQuantity = this.instInt === "Daily" ? this.totalDaysQuantity : this.inst === "Weekly" ? Math.ceil(this.totalDaysQuantity / 7) : Math.ceil(this.totalDaysQuantity / 30);
+
+        const initialRow = `
+                    <tr>
+                        <td>${ this.startDate.toLocaleDateString() }</td>
+                        <td>Nothing to pay</td>
+                        <td>${ this.totalLoanAmount }</td>
+                    </tr>
+        `;
+
+        tableBody.innerHTML = initialRow;
+
+        for(let i = 1; i < paymentsQuantity; i++) {
+            let date = this.startDate.getMonth() + i;
+            let newDate = new Date(new Date(this.startDate).setMonth(date)).toDateString();
+
+            let payRow = `
+                    <tr>
+                        <td>${ newDate }</td>
+                        <td>${ this.insAmount }</td>
+                        <td>${ PaymentCalculator.roundNumber(this.totalLoanAmount - this.insAmount * i, 2)}</td>
+                    </tr>
+        `;
+
+            tableBody.innerHTML += payRow;
+        }
+
+        const lastPayment = this.totalLoanAmount - this.insAmount * (paymentsQuantity - 1);
+        let date = this.startDate.getMonth() + paymentsQuantity;
+        let newDate = new Date(new Date(this.startDate).setMonth(date)).toDateString();
+        const lastPay = `
+                    <tr class="last-payment">
+                        <td>${ newDate }</td>
+                        <td>LAST PAYMENT: ${ PaymentCalculator.roundNumber(lastPayment, 2) }</td>
+                        <td>Nothing to pay</td>
+                    </tr>
+        `;
+
+        tableBody.innerHTML += lastPay;
+        table.appendChild(tableBody);
     }
 
 
