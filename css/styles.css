@@ -45,13 +45,3 @@ label {
     font-weight: bold;
 }
 
-.payment-schedule {
-    display: none;
-}
-
-.last-payment {
-    font-weight: bold;
-    text-transform: uppercase;
-    background: forestgreen;
-    color: white;
-}
