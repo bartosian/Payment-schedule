@@ -95,6 +95,4 @@ class PaymentCalculator {
         tableBody.innerHTML += lastPay;
         table.appendChild(tableBody);
     }
-
-
 }
